@@ -6,29 +6,23 @@ using Stocks.Models;
 
 namespace WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
-        private IUsersService _userService;
+        private IUsersService _usersService;
 
-        public UsersController(IUsersService userService)
+        public UsersController(IUsersService usersService)
         {
-            _userService = userService;
+            _usersService = usersService;
         }
-
-        [HttpGet("[action]")]
-        public IActionResult A()
-        {
-            return Ok("ahahahha");
-        }
-
+        
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]User user)
         {
-            var authUser = _userService.Authenticate(user.Name, user.Password);
+            var authUser = _usersService.Authenticate(user.Name, user.Password);
 
             if (authUser == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -40,7 +34,7 @@ namespace WebApi.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody]User user)
         {
-            if (_userService.Register(user))
+            if (_usersService.Register(user))
                 return Ok();
             return BadRequest();
         }
@@ -49,14 +43,14 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = _userService.GetAll();
+            var users = _usersService.GetAll();
             return Ok(users);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var user = _userService.GetById(id);
+            var user = _usersService.GetById(id);
 
             if (user == null)
             {

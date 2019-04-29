@@ -10,9 +10,9 @@ namespace Stocks.Services
 {
     public interface IStocksService
     {
-        Stock AddStock(Stock stock);
-        bool DeleteSock(Stock user);
-        IEnumerable<Stock> GetStocks(int userId);
+        Stock AddStock(Stock stock, int ownerId);
+        bool RemoveStock(int stockId, int ownerId);
+        IEnumerable<Stock> GetStocks(int ownerId);
     }
 
     public class StocksService : IStocksService
@@ -24,26 +24,41 @@ namespace Stocks.Services
             _db = db;
         }
 
-        public Stock AddStock(Stock stock)
+        public Stock AddStock(Stock stock, int ownerId)
         {
             if (stock != null)
             {
                 _db.Stocks.Add(stock);
+                _db.SaveChanges();
+                _db.UsersStocks.Add(new UserStock { StockId = stock.Id, UserId = ownerId });
                 _db.SaveChanges();
                 return stock;
             }
             return null;
         }
 
-        public bool DeleteSock(Stock user)
+        public bool RemoveStock(int stockId, int ownerId)
         {
-            return true;
+            var userStock = _db.UsersStocks.FirstOrDefault(us => us.StockId == stockId && us.UserId == ownerId);
+
+            if (userStock == null)
+                return false;
+
+            var stock = _db.Stocks.Find(userStock.StockId);
+
+            if (stock != null)
+            {
+                _db.Stocks.Remove(stock);
+                _db.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
-        public IEnumerable<Stock> GetStocks(int userId)
+        public IEnumerable<Stock> GetStocks(int ownerId)
         {
             return _db.UsersStocks
-                .Where(us => us.UserId == userId)
+                .Where(us => us.UserId == ownerId)
                 .Include(us => us.Stock)
                 .Select(us => us.Stock);
         }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Stocks.Models;
 using Stocks.Services;
 using System;
 using System.Collections.Generic;
@@ -7,21 +9,37 @@ using System.Threading.Tasks;
 
 namespace Stocks.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class StocksController : Controller
     {
-        private IUsersService _userService;
+        private IStocksService _stocksService;
 
-        public StocksController(IUsersService userService)
+        public StocksController(IStocksService usersService)
         {
-            _userService = userService;
+            _stocksService = usersService;
         }
 
-        [HttpGet("[action]")]
-        public IActionResult A()
+        [HttpPost("add")]
+        public IActionResult AddStock(Stock stock)
         {
-            return Ok("12313");
+            var currentUserId = int.Parse(User.Identity.Name);
+            return Ok(_stocksService.AddStock(stock, currentUserId));
+        }
+
+        [HttpPost("remove/{ownerId}")]
+        public IActionResult RemoveStock(int ownerId)
+        {
+            var currentUserId = int.Parse(User.Identity.Name);
+            return Ok(_stocksService.RemoveStock(ownerId, currentUserId));
+        }
+
+        [HttpGet]
+        public IActionResult GetStocks()
+        {
+            var currentUserId = int.Parse(User.Identity.Name);
+            return Ok(_stocksService.GetStocks(currentUserId));
         }
     }
 }
