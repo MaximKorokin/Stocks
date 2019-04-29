@@ -47,6 +47,7 @@ namespace WebApi.Controllers
             return Ok(users);
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
