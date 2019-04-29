@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Stocks.Services;
 using Stocks.Entities;
+using Stocks.Models;
 
 namespace WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : Controller
     {
         private IUsersService _userService;
 
@@ -17,16 +18,31 @@ namespace WebApi.Controllers
             _userService = userService;
         }
 
+        [HttpGet("[action]")]
+        public IActionResult A()
+        {
+            return Ok("ahahahha");
+        }
+
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]TokenUser userParam)
+        public IActionResult Authenticate([FromBody]User user)
         {
-            var user = _userService.Authenticate(userParam.Name, userParam.Password);
+            var authUser = _userService.Authenticate(user.Name, user.Password);
 
-            if (user == null)
+            if (authUser == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            return Ok(user);
+            return Ok(authUser);
+        }
+
+        [Authorize(Roles = Role.Admin)]
+        [HttpPost("register")]
+        public IActionResult Register([FromBody]User user)
+        {
+            if (_userService.Register(user))
+                return Ok();
+            return BadRequest();
         }
 
         [Authorize(Roles = Role.Admin)]

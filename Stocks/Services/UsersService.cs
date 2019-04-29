@@ -6,41 +6,42 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Stocks.Data;
 using Stocks.Entities;
 using Stocks.Helpers;
+using Stocks.Models;
 
 namespace Stocks.Services
 {
     public interface IUsersService
     {
         TokenUser Authenticate(string username, string password);
-        IEnumerable<TokenUser> GetAll();
-        TokenUser GetById(int id);
+        bool Register(User user);
+        IEnumerable<User> GetAll();
+        User GetById(int id);
     }
 
-    public class UserService : IUsersService
+    public class UsersService : IUsersService
     {
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<TokenUser> _users = new List<TokenUser>
-        {
-            new TokenUser { Id = 1, Name = "admin", Password = "admin", Role = Role.Admin },
-            new TokenUser { Id = 2, Name = "user", Password = "user", Role = Role.User }
-        };
-
         private readonly AppSettings _appSettings;
+        private readonly StocksDbContext _db;
 
-        public UserService(IOptions<AppSettings> appSettings)
+        public UsersService(IOptions<AppSettings> appSettings, StocksDbContext db)
         {
             _appSettings = appSettings.Value;
+            _db = db;
         }
 
         public TokenUser Authenticate(string username, string password)
         {
-            var user = _users.SingleOrDefault(x => x.Name == username && x.Password == password);
+            var authUser = _db.Users.SingleOrDefault(x => x.Name == username && x.Password == password);
 
             // return null if user not found
-            if (user == null)
+            if (authUser == null)
                 return null;
+
+            TokenUser user = new TokenUser { Id = authUser.Id, Name = authUser.Name, Password = authUser.Password, Role = authUser.Role };
+
 
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -64,18 +65,30 @@ namespace Stocks.Services
             return user;
         }
 
-        public IEnumerable<TokenUser> GetAll()
+        public bool Register(User user)
+        {
+            if (_db.Users.FirstOrDefault(u => u.Name == user.Name) != null ||
+                user.Password == "")
+                return false;
+            _db.Users.Add(user);
+            _db.SaveChanges();
+            return true;
+        }
+
+        public IEnumerable<User> GetAll()
         {
             // return users without passwords
-            return _users.Select(x => {
+            return _db.Users
+                .AsEnumerable()
+                .Select(x => {
                 x.Password = null;
                 return x;
             });
         }
 
-        public TokenUser GetById(int id)
+        public User GetById(int id)
         {
-            var user = _users.FirstOrDefault(x => x.Id == id);
+            var user = _db.Users.FirstOrDefault(x => x.Id == id);
 
             // return user without password
             if (user != null)

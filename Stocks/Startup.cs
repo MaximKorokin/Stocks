@@ -67,7 +67,8 @@ namespace Stocks
             });
 
             // configure DI for application services
-            services.AddScoped<IUsersService, UserService>();
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IStocksService, StocksService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
