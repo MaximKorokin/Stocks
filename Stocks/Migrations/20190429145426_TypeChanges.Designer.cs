@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Stocks.Data;
 
 namespace Stocks.Migrations
 {
     [DbContext(typeof(StocksDbContext))]
-    partial class StocksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190429145426_TypeChanges")]
+    partial class TypeChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,15 +59,14 @@ namespace Stocks.Migrations
 
                     b.Property<int>("StockId");
 
+                    b.Property<int>("ItemStateId");
+
                     b.Property<DateTime>("ArrivalDate");
 
-                    b.Property<int?>("ItemStateId");
-
-                    b.HasKey("ItemId", "StockId", "ArrivalDate");
+                    b.HasKey("ItemId", "StockId", "ItemStateId");
 
                     b.HasIndex("ItemStateId")
-                        .IsUnique()
-                        .HasFilter("[ItemStateId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("StockId");
 
@@ -133,7 +134,8 @@ namespace Stocks.Migrations
 
                     b.HasOne("Stocks.Models.ItemState", "ItemState")
                         .WithOne("ItemStockHistory")
-                        .HasForeignKey("Stocks.Models.ItemStockHistory", "ItemStateId");
+                        .HasForeignKey("Stocks.Models.ItemStockHistory", "ItemStateId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Stocks.Models.Stock", "Stock")
                         .WithMany("ItemsStocksHistory")

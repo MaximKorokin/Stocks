@@ -28,11 +28,11 @@ namespace Stocks.Controllers
             return Ok(_stocksService.AddStock(stock, currentUserId));
         }
 
-        [HttpPost("remove/{ownerId}")]
-        public IActionResult RemoveStock(int ownerId)
+        [HttpPost("remove/{stockId}")]
+        public IActionResult RemoveStock(int stockId)
         {
             var currentUserId = int.Parse(User.Identity.Name);
-            return Ok(_stocksService.RemoveStock(ownerId, currentUserId));
+            return Ok(_stocksService.RemoveStock(stockId, currentUserId));
         }
 
         [HttpGet]

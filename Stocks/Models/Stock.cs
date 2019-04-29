@@ -8,6 +8,7 @@ namespace Stocks.Models
         public string Name { get; set; }
         public double Capacity { get; set; }
 
+        public IEnumerable<UserStock> UsersStocks { get; set; }
         public IEnumerable<ItemStockHistory> ItemsStocksHistory { get; set; }
     }
 }

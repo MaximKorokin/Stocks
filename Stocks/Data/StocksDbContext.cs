@@ -40,6 +40,11 @@ namespace Stocks.Data
                 .WithMany(u => u.UsersStocks)
                 .HasForeignKey(us => us.UserId)
                 .HasPrincipalKey(u => u.Id);
+
+                entity.HasOne(us => us.Stock)
+                .WithMany(s => s.UsersStocks)
+                .HasForeignKey(us => us.StockId)
+                .HasPrincipalKey(s => s.Id);
             });
 
             modelBuilder.Entity<Item>(entity =>
@@ -54,7 +59,7 @@ namespace Stocks.Data
 
             modelBuilder.Entity<ItemStockHistory>(entity =>
             {
-                entity.HasKey(ish => new { ish.ItemId, ish.StockId, ish.ItemStateId });
+                entity.HasKey(ish => new { ish.ItemId, ish.StockId, ish.ArrivalDate });
 
                 entity.HasOne(ish => ish.Item)
                 .WithMany(i => i.ItemsStocksHistory)
@@ -69,7 +74,8 @@ namespace Stocks.Data
                 entity.HasOne(ish => ish.ItemState)
                 .WithOne(s => s.ItemStockHistory)
                 .HasForeignKey<ItemStockHistory>(ish => ish.ItemStateId)
-                .HasPrincipalKey<ItemState>(s => s.Id);
+                .HasPrincipalKey<ItemState>(s => s.Id)
+                .IsRequired(false);
             });
         }
     }
