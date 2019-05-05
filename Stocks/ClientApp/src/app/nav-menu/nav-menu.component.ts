@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GlobalUserManager } from '../global-user-manager';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,6 +8,8 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
+
+  constructor(private manager: GlobalUserManager) { }
 
   collapse() {
     this.isExpanded = false;
