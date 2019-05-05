@@ -11,6 +11,7 @@ namespace Stocks.Services
     public interface IItemsService
     {
         Item AddItem(Item item, int stockId, int ownerId);
+        Item GetItem(int itemId, int ownerId);
         IEnumerable<Item> GetStockItems(int stockId, int ownerId);
         bool RemoveItem(int itemId, int ownerId);
         bool MoveItem(int itemId, int stockId, int ownerId);
@@ -39,6 +40,18 @@ namespace Stocks.Services
                 return item;
             }
             return null;
+        }
+
+        public Item GetItem(int itemId, int ownerId)
+        {
+            var itemStockHistory = GetItemLastEntry(itemId, ownerId);
+
+            if (itemStockHistory == null)
+                return null;
+
+            var item = _db.Items.Find(itemId);
+            item.ItemsStocksHistory = null;
+            return item;
         }
 
         public IEnumerable<Item> GetStockItems(int stockId, int ownerId)
@@ -137,10 +150,33 @@ namespace Stocks.Services
 
             var itemHistory = _db.ItemsStocksHistory
                 .Where(ish => ish.ItemId == itemId)
-                .OrderBy(ish => ish.ArrivalDate)
-                .Include(ish => ish.Item)
-                .Include(ish => ish.Stock)
-                .Include(ish => ish.ItemState);
+                .OrderBy(ish => ish.ArrivalDate);
+                //.Include(ish => ish.Item)
+                //.Include(ish => ish.Stock)
+                //.Include(ish => ish.ItemState)
+                //.AsEnumerable()
+                //.Select(ish =>
+                //{
+                //    ish.Item.ItemsStocksHistory = null;
+                //    ish.Item.ItemState = null;
+                //    ish.Stock.ItemsStocksHistory = null;
+                //    ish.Stock.UsersStocks = null;
+                //    ish.ItemState.ItemStockHistory = null;
+                //    ish.Item = null;
+                //    ish.Stock = null;
+                //    ish.ItemState = null;
+                //    return ish;
+                //});
+
+            //var itemHistory = _db.Items.Find(itemId)
+            //    .ItemsStocksHistory
+            //    .Select(ish =>
+            //    {
+            //        ish.Item = null;
+            //        ish.Stock = null;
+            //        ish.ItemState = null;
+            //        return ish;
+            //    });
 
             return itemHistory;
         }

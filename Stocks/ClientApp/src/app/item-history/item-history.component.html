@@ -1,3 +1,38 @@
+<style>
+  .table-cell {
+    text-align: center;
+    padding: 5px;
+  }
+</style>
+
 <h1>
   Item history
 </h1>
+<div>
+  Item identifier: {{(item ? item.name : "name") + ":" + (item ? item.id : "id")}}
+</div>
+<br />
+<table border="1">
+  <tr>
+    <th class="table-cell">
+      Stock
+    </th>
+    <th class="table-cell">
+      Date
+    </th>
+    <th class="table-cell">
+      State
+    </th>
+  </tr>
+  <tr *ngFor="let item of itemsStocksHistory">
+    <td class="table-cell">
+      <a [routerLink]="['/stock-items', item.stockId]">{{item.stock ? item.stock.name : "NA"}}</a>
+    </td>
+    <td class="table-cell">
+      {{item.arrivalDate.toLocaleString().slice(0, 19).replace("T", " ")}}
+    </td>
+    <td class="table-cell">
+      <a [routerLink]="['/item-state', item.itemStateId ? item.itemStateId : 0]">{{item.itemStateId ? "State" : ""}}</a>
+    </td>
+  </tr>
+</table>

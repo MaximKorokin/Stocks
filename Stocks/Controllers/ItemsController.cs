@@ -29,6 +29,16 @@ namespace Stocks.Controllers
             return Ok(newItem);
         }
 
+        [HttpGet("get/{itemId}")]
+        public IActionResult GetItem(int itemId)
+        {
+            var currentUserId = int.Parse(User.Identity.Name);
+            var item = _itemsService.GetItem(itemId, currentUserId);
+            if (item == null)
+                return NotFound();
+            return Ok(item);
+        }
+
         [HttpGet("{stockId}")]
         public IActionResult GetStockItems(int stockId)
         {
