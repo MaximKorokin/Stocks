@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { GlobalUserManager, User } from '../global-user-manager';
 
 @Component({
@@ -7,14 +7,22 @@ import { GlobalUserManager, User } from '../global-user-manager';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class LoginComponent implements OnInit {
-  url: string;
+export class ProfileComponent implements OnInit {
+  user: User;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private manager: GlobalUserManager) {
-    this.url = baseUrl + "api/Users/";
+  constructor(private manager: GlobalUserManager, private router: Router) {
+    this.user = manager.getUser();
   }
 
   ngOnInit() {
   }
 
+  logout() {
+    this.manager.logout();
+    this.router.navigate(["./login"]);
+  }
+
+  edit() {
+    this.router.navigate(["./edit-user"]);
+  }
 }

@@ -8,19 +8,20 @@
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]='{"show": isExpanded}'>
         <ul class="navbar-nav flex-grow">
+          <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+            <a class="nav-link text-dark" [routerLink]='["/"]'>Home</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dark" [routerLink]='["/about"]'>About</a>
+          </li>
+
           <ng-template *ngIf="manager.isLoggedIn(); then profile; else login"></ng-template>
           <ng-template #profile>
-            <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-              <a class="nav-link text-dark" [routerLink]='["/"]'>Home</a>
+            <li class="nav-item" [routerLinkActive]='["link-active"]'>
+              <a class="nav-link text-dark" [routerLink]='["/user-stocks"]'>My stocks</a>
             </li>
             <li class="nav-item" [routerLinkActive]='["link-active"]'>
-              <a class="nav-link text-dark" [routerLink]='["/counter"]'>Counter</a>
-            </li>
-            <li class="nav-item" [routerLinkActive]='["link-active"]'>
-              <a class="nav-link text-dark" [routerLink]='["/fetch-data"]'>Fetch data</a>
-            </li>
-            <li class="nav-item" [routerLinkActive]='["link-active"]'>
-              <a class="nav-link text-dark" [routerLink]='["/login"]'>Profile</a>
+              <a class="nav-link text-dark" [routerLink]='["/profile"]'>Profile</a>
             </li>
           </ng-template>
           <ng-template #login>

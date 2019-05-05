@@ -1,4 +1,5 @@
-﻿using Stocks.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Stocks.Data;
 using Stocks.Models;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Stocks.Services
         bool RemoveItem(int itemId, int ownerId);
         bool MoveItem(int itemId, int stockId, int ownerId);
         ItemState AddItemState(ItemState itemState, int itemId, int ownerId);
+        IEnumerable<ItemStockHistory> GetItemHistory(int itemId, int ownerId);
     }
 
     public class ItemsService : IItemsService
@@ -70,18 +72,9 @@ namespace Stocks.Services
 
         public bool RemoveItem(int itemId, int ownerId)
         {
-            var itemStockHistory = _db.ItemsStocksHistory
-                .FirstOrDefault(ish => ish.ItemId == itemId &&
-                    ish.ArrivalDate == _db.ItemsStocksHistory
-                        .Where(ish1 => ish1.ItemId == itemId)
-                        .Max(ish1 => ish1.ArrivalDate));
+            var itemStockHistory = GetItemLastEntry(itemId, ownerId);
 
             if (itemStockHistory == null)
-                return false;
-
-            var userStock = _db.UsersStocks.FirstOrDefault(us => us.StockId == itemStockHistory.StockId && us.UserId == ownerId);
-
-            if (userStock == null)
                 return false;
 
             var item = _db.Items.Find(itemStockHistory.ItemId);
@@ -98,18 +91,9 @@ namespace Stocks.Services
 
         public bool MoveItem(int itemId, int stockId, int ownerId)
         {
-            var itemStockHistory = _db.ItemsStocksHistory
-                .FirstOrDefault(ish => ish.ItemId == itemId &&
-                    ish.ArrivalDate == _db.ItemsStocksHistory
-                        .Where(ish1 => ish1.ItemId == itemId)
-                        .Max(ish1 => ish1.ArrivalDate));
+            var itemStockHistory = GetItemLastEntry(itemId, ownerId);
 
             if (itemStockHistory == null)
-                return false;
-
-            var userStock = _db.UsersStocks.FirstOrDefault(us => us.StockId == itemStockHistory.StockId && us.UserId == ownerId);
-
-            if (userStock == null)
                 return false;
 
             _db.ItemsStocksHistory.Add(new ItemStockHistory { ItemId = itemId, StockId = stockId, ArrivalDate = DateTime.Now });
@@ -119,18 +103,9 @@ namespace Stocks.Services
 
         public ItemState AddItemState(ItemState itemState, int itemId, int ownerId)
         {
-            var itemStockHistory = _db.ItemsStocksHistory
-                .FirstOrDefault(ish => ish.ItemId == itemId &&
-                    ish.ArrivalDate == _db.ItemsStocksHistory
-                        .Where(ish1 => ish1.ItemId == itemId)
-                        .Max(ish1 => ish1.ArrivalDate));
+            var itemStockHistory = GetItemLastEntry(itemId, ownerId);
 
             if (itemStockHistory == null)
-                return null;
-
-            var userStock = _db.UsersStocks.FirstOrDefault(us => us.StockId == itemStockHistory.StockId && us.UserId == ownerId);
-
-            if (userStock == null)
                 return null;
 
             _db.ItemStates.Add(itemState);
@@ -151,6 +126,41 @@ namespace Stocks.Services
 
             itemState.ItemStockHistory = null;
             return itemState;
+        }
+
+        public IEnumerable<ItemStockHistory> GetItemHistory(int itemId, int ownerId)
+        {
+            var itemStockHistory = GetItemLastEntry(itemId, ownerId);
+
+            if (itemStockHistory == null)
+                return null;
+
+            var itemHistory = _db.ItemsStocksHistory
+                .Where(ish => ish.ItemId == itemId)
+                .OrderBy(ish => ish.ArrivalDate)
+                .Include(ish => ish.Item)
+                .Include(ish => ish.Stock)
+                .Include(ish => ish.ItemState);
+
+            return itemHistory;
+        }
+
+        private ItemStockHistory GetItemLastEntry(int itemId, int ownerId)
+        {
+            var itemStockHistory = _db.ItemsStocksHistory
+                .FirstOrDefault(ish => ish.ItemId == itemId &&
+                    ish.ArrivalDate == _db.ItemsStocksHistory
+                        .Where(ish1 => ish1.ItemId == itemId)
+                        .Max(ish1 => ish1.ArrivalDate));
+
+            if (itemStockHistory == null)
+                return null;
+
+            var userStock = _db.UsersStocks.FirstOrDefault(us => us.StockId == itemStockHistory.StockId && us.UserId == ownerId);
+
+            if (userStock == null)
+                return null;
+            return itemStockHistory;
         }
     }
 }

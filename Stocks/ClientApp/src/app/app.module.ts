@@ -12,6 +12,12 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { AboutComponent } from './about/about.component';
+import { UserStocksComponent } from './user-stocks/user-stocks.component';
+import { StockItemsComponent } from './stock-items/stock-items.component';
+import { ItemHistoryComponent } from './item-history/item-history.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +27,12 @@ import { LoginComponent } from './login/login.component';
     CounterComponent,
     FetchDataComponent,
     LoginComponent,
+    ProfileComponent,
+    EditUserComponent,
+    AboutComponent,
+    UserStocksComponent,
+    StockItemsComponent,
+    ItemHistoryComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -31,6 +43,12 @@ import { LoginComponent } from './login/login.component';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'login', component: LoginComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'edit-user', component: EditUserComponent },
+      { path: 'about', component: AboutComponent },
+      { path: 'user-stocks', component: UserStocksComponent },
+      { path: 'stock-items/:id', component: StockItemsComponent },
+      { path: 'item-history/:id', component: ItemHistoryComponent },
     ])
   ],
   providers: [GlobalUserManager],

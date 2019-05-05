@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class GlobalUserManager {
@@ -15,7 +15,6 @@ export class GlobalUserManager {
 
   constructor(private http: HttpClient) {
     this.user = JSON.parse(localStorage.getItem("currentUser"));
-    console.log(this.user);
   }
 
   setUser(user: User) {
@@ -32,6 +31,9 @@ export class GlobalUserManager {
     //this.role = user.role;
     //this.language = user.language;
 
+    console.log(user.password);
+
+    this.user = user;
     localStorage.setItem("currentUser", JSON.stringify(user));
   }
   getUser() {
@@ -43,27 +45,38 @@ export class GlobalUserManager {
 
   login(path: string, user: User, callback: Function) {
     this.http.post<User>(path, { name: user.name, password: user.password }).subscribe(result => {
-      callback(result);
+      if (callback != null)
+        callback(result);
       this.setUser(result);
     }, error => console.error(error));
   }
 
   logout() {
     localStorage.removeItem('currentUser');
+    this.user = null;
   }
 
-  get(path: string, callback: Function) {
-    this.http.get(location.origin + "/api/" + path).subscribe(
+  get(path: string, callback: Function = null) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "bearer " + this.user.token
+      })
+    };
+
+    this.http.get(location.origin + "/api/" + path, httpOptions).subscribe(
       obj => {
         callback(obj);
       }, error => console.error(error));
   }
 
-  post(path: string, obj: object, callback: Function) {
-    if (!this.isLoggedIn())
-      return;
+  post(path: string, obj: object, callback: Function = null) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "bearer " + this.user.token
+      })
+    };
 
-    this.http.post<Object>(location.origin + "/api/" + path, obj).subscribe(
+    this.http.post<Object>(location.origin + "/api/" + path, obj, httpOptions).subscribe(
       obj => {
         if (callback != null)
           callback(obj);
@@ -75,7 +88,8 @@ export class GlobalUserManager {
   }
 
   translate(key: string) {
-    return this.locale[key];
+    return key;
+    //return this.locale[key];
   }
 }
 

@@ -60,5 +60,15 @@ namespace Stocks.Controllers
             var state = _itemsService.AddItemState(itemState, itemId, currentUserId);
             return Ok(state);
         }
+
+        [HttpGet("history/{itemId}")]
+        public IActionResult GetItemHistory(int itemId)
+        {
+            var currentUserId = int.Parse(User.Identity.Name);
+            var itemHistory = _itemsService.GetItemHistory(itemId, currentUserId);
+            if (itemHistory == null)
+                return BadRequest();
+            return Ok(itemHistory);
+        }
     }
 }

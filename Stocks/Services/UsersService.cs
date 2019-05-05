@@ -19,6 +19,7 @@ namespace Stocks.Services
         bool Register(User user);
         IEnumerable<User> GetAll();
         User GetById(int id);
+        bool EditUser(User user);
     }
 
     public class UsersService : IUsersService
@@ -40,7 +41,7 @@ namespace Stocks.Services
             if (authUser == null)
                 return null;
 
-            TokenUser user = new TokenUser { Id = authUser.Id, Name = authUser.Name, Password = authUser.Password, Role = authUser.Role };
+            TokenUser user = new TokenUser { Id = authUser.Id, Name = authUser.Name, Password = authUser.Password, Role = authUser.Role, Language = authUser.Language };
 
 
             // authentication successful so generate jwt token
@@ -60,7 +61,7 @@ namespace Stocks.Services
             user.Token = tokenHandler.WriteToken(token);
 
             // remove password before returning
-            user.Password = null;
+            //user.Password = null;
 
             return user;
         }
@@ -81,7 +82,7 @@ namespace Stocks.Services
             return _db.Users
                 .AsEnumerable()
                 .Select(x => {
-                x.Password = null;
+                //x.Password = null;
                 return x;
             });
         }
@@ -91,10 +92,23 @@ namespace Stocks.Services
             var user = _db.Users.FirstOrDefault(x => x.Id == id);
 
             // return user without password
-            if (user != null)
-                user.Password = null;
+            //if (user != null)
+            //    user.Password = null;
 
             return user;
+        }
+
+        public bool EditUser(User newUser)
+        {
+            var user = _db.Users.Find(newUser.Id);
+            if (user == null ||
+                string.IsNullOrWhiteSpace(newUser.Name))
+                return false;
+            if (string.IsNullOrWhiteSpace(newUser.Password))
+                newUser.Password = user.Password;
+            _db.Entry(user).CurrentValues.SetValues(newUser);
+            _db.SaveChanges();
+            return true;
         }
     }
 }

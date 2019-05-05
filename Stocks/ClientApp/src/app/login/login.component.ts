@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { GlobalUserManager, User } from '../global-user-manager';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
 
   url: string;
 
-  constructor(private manager: GlobalUserManager, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private manager: GlobalUserManager, @Inject('BASE_URL') baseUrl: string, private router: Router) {
     this.url = baseUrl + "api/Users/";
   }
 
@@ -25,6 +26,8 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.manager.login(this.url + "authenticate", <User>{ name: this.name, password: this.password }, (user) => { console.log(user); });
+    this.manager.login(this.url + "authenticate", <User>{ name: this.name, password: this.password }, (user) => {
+      this.router.navigate(["."]);
+    });
   }
 }

@@ -17,7 +17,7 @@ namespace WebApi.Controllers
         {
             _usersService = usersService;
         }
-        
+
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]User user)
@@ -66,6 +66,15 @@ namespace WebApi.Controllers
             }
 
             return Ok(user);
+        }
+
+        [HttpPost("edit")]
+        public IActionResult Edit(User user)
+        {
+            user.Id = int.Parse(User.Identity.Name);
+            if (_usersService.EditUser(user))
+                return Ok();
+            return BadRequest();
         }
     }
 }
