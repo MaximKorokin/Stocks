@@ -32,6 +32,8 @@ namespace Stocks.Services
                 _db.SaveChanges();
                 _db.UsersStocks.Add(new UserStock { StockId = stock.Id, UserId = ownerId });
                 _db.SaveChanges();
+                stock.UsersStocks = null;
+                stock.ItemsStocksHistory = null;
                 return stock;
             }
             return null;

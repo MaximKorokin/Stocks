@@ -19,6 +19,9 @@ import { UserStocksComponent } from './user-stocks/user-stocks.component';
 import { StockItemsComponent } from './stock-items/stock-items.component';
 import { ItemHistoryComponent } from './item-history/item-history.component';
 import { ItemStateComponent } from './item-state/item-state.component';
+import { AddStockComponent } from './add-stock/add-stock.component';
+import { AddItemComponent } from './add-item/add-item.component';
+import { AddStateComponent } from './add-state/add-state.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { ItemStateComponent } from './item-state/item-state.component';
     StockItemsComponent,
     ItemHistoryComponent,
     ItemStateComponent,
+    AddStockComponent,
+    AddItemComponent,
+    AddStateComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -52,6 +58,9 @@ import { ItemStateComponent } from './item-state/item-state.component';
       { path: 'stock-items/:id', component: StockItemsComponent },
       { path: 'item-history/:id', component: ItemHistoryComponent },
       { path: 'item-state/:id', component: ItemStateComponent },
+      { path: 'add-stock', component: AddStockComponent },
+      { path: 'add-item/:id', component: AddItemComponent },
+      { path: 'add-state/:id', component: AddStateComponent },
     ])
   ],
   providers: [GlobalUserManager],

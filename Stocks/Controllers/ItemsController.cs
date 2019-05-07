@@ -67,7 +67,15 @@ namespace Stocks.Controllers
         public IActionResult AddItemState(ItemState itemState, int itemId)
         {
             var currentUserId = int.Parse(User.Identity.Name);
-            var state = _itemsService.AddItemState(itemState, itemId, currentUserId);
+            var state = _itemsService.AddItemState(itemState, itemId, currentUserId, true);
+            return Ok(state);
+        }
+
+        [HttpPost("writestate/{itemId}")]
+        public IActionResult WriteItemState(ItemState itemState, int itemId)
+        {
+            var currentUserId = int.Parse(User.Identity.Name);
+            var state = _itemsService.AddItemState(itemState, itemId, currentUserId, false);
             return Ok(state);
         }
 
@@ -79,6 +87,14 @@ namespace Stocks.Controllers
             if (itemHistory == null)
                 return BadRequest();
             return Ok(itemHistory);
+        }
+
+        [HttpGet("getstate/{stateId}")]
+        public IActionResult GetItemState(int stateId)
+        {
+            var currentUserId = int.Parse(User.Identity.Name);
+            var state = _itemsService.GetItemState(stateId, currentUserId);
+            return Ok(state);
         }
     }
 }

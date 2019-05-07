@@ -15,8 +15,9 @@ namespace Stocks.Services
         IEnumerable<Item> GetStockItems(int stockId, int ownerId);
         bool RemoveItem(int itemId, int ownerId);
         bool MoveItem(int itemId, int stockId, int ownerId);
-        ItemState AddItemState(ItemState itemState, int itemId, int ownerId);
+        ItemState AddItemState(ItemState itemState, int itemId, int ownerId, bool addNew);
         IEnumerable<ItemStockHistory> GetItemHistory(int itemId, int ownerId);
+        ItemState GetItemState(int stateId, int ownerId);
     }
 
     public class ItemsService : IItemsService
@@ -114,8 +115,11 @@ namespace Stocks.Services
             return true;
         }
 
-        public ItemState AddItemState(ItemState itemState, int itemId, int ownerId)
+        public ItemState AddItemState(ItemState itemState, int itemId, int ownerId, bool addNew)
         {
+            if (itemState == null)
+                return null;
+
             var itemStockHistory = GetItemLastEntry(itemId, ownerId);
 
             if (itemStockHistory == null)
@@ -124,7 +128,7 @@ namespace Stocks.Services
             _db.ItemStates.Add(itemState);
             _db.SaveChanges();
 
-            if (itemStockHistory.ItemStateId == null)
+            if (!addNew)
             {
                 itemStockHistory.ItemStateId = itemState.Id;
             }
@@ -179,6 +183,13 @@ namespace Stocks.Services
             //    });
 
             return itemHistory;
+        }
+
+        public ItemState GetItemState(int stateId, int ownerId)
+        {
+            var state = _db.ItemStates.Find(stateId);
+
+            return state;
         }
 
         private ItemStockHistory GetItemLastEntry(int itemId, int ownerId)

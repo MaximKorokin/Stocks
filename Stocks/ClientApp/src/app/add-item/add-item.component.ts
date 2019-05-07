@@ -1,30 +1,24 @@
 import { Component } from '@angular/core';
+import { Item } from '../stock-items/stock-items.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalUserManager } from '../global-user-manager';
 
 @Component({
-  selector: 'app-about',
-  templateUrl: './stock-items.component.html',
+  selector: 'app-add-item',
+  templateUrl: './add-item.component.html',
 })
-export class StockItemsComponent {
-  private items: Item[];
+export class AddItemComponent {
+  private item: Item;
   private stockId;
 
   constructor(private route: ActivatedRoute, private router: Router, private manager: GlobalUserManager) {
     this.stockId = this.route.snapshot.paramMap.get('id');
-
-    this.manager.get("items/" + this.stockId, (items) => {
-      this.items = items;
-    });
+    this.item = <Item>{};
   }
 
   addItem() {
-    this.router.navigate(["./add-item/" + this.stockId]);
+    this.manager.post("items/add/" + this.stockId, this.item, item => {
+      this.router.navigate(["./item-history/" + item.id]);
+    });
   }
-}
-
-export interface Item {
-  id: number;
-  name: string;
-  capacity: number;
 }

@@ -1,0 +1,13 @@
+<h1>
+  add-state
+</h1>
+
+<div>
+  Mass:<input type="number" [(ngModel)]="state.mass" />
+</div>
+<div>
+  Add new state:<input type="checkbox" [(ngModel)]="addNewState" />
+</div>
+<div>
+  <input type="button" value="Add state" (click)="addState()" />
+</div>

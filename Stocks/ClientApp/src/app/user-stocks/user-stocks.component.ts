@@ -14,6 +14,10 @@ export class UserStocksComponent {
       this.stocks = s;
     });
   }
+
+  addStock() {
+    this.router.navigate(["./add-stock"]);
+  }
 }
 
 export interface Stock {

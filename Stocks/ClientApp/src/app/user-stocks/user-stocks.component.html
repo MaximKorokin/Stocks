@@ -1,6 +1,7 @@
 <h1>
   Stocks
 </h1>
+<input type="button" value="Add stock" (click)="addStock()" />
 <ul>
   <li *ngFor="let stock of stocks">
     <a [routerLink]="['/stock-items', stock.id]">{{stock.name}}</a>

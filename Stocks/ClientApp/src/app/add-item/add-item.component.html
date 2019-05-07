@@ -1,0 +1,12 @@
+<h1>
+  add-item
+</h1>
+<div>
+  Name:<input type="text" [(ngModel)]="item.name" />
+</div>
+<div>
+  Capacity:<input type="number" [(ngModel)]="item.capacity" />
+</div>
+<div>
+  <input type="button" value="Create" (click)="addItem()" />
+</div>

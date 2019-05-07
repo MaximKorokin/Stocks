@@ -1,0 +1,12 @@
+<h1>
+  add-stock
+</h1>
+<div>
+  Name:<input type="text" [(ngModel)]="stock.name" />
+</div>
+<div>
+  Capacity:<input type="number" [(ngModel)]="stock.capacity" />
+</div>
+<div>
+  <input type="button" value="Create" (click)="addStock()" />
+</div>

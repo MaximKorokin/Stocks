@@ -25,7 +25,8 @@ namespace Stocks.Controllers
         public IActionResult AddStock(Stock stock)
         {
             var currentUserId = int.Parse(User.Identity.Name);
-            return Ok(_stocksService.AddStock(stock, currentUserId));
+            var newStock = _stocksService.AddStock(stock, currentUserId);
+            return Ok(newStock);
         }
 
         [HttpPost("remove/{stockId}")]
