@@ -22,6 +22,9 @@ import { ItemStateComponent } from './item-state/item-state.component';
 import { AddStockComponent } from './add-stock/add-stock.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { AddStateComponent } from './add-state/add-state.component';
+import { MoveItemComponent } from './move-item/move-item.component';
+import { AdministratingComponent } from './administrating/administrating.component';
+import { AdmUsersComponent } from './adm-users/adm-users.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,9 @@ import { AddStateComponent } from './add-state/add-state.component';
     AddStockComponent,
     AddItemComponent,
     AddStateComponent,
+    MoveItemComponent,
+    AdministratingComponent,
+    AdmUsersComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -61,6 +67,9 @@ import { AddStateComponent } from './add-state/add-state.component';
       { path: 'add-stock', component: AddStockComponent },
       { path: 'add-item/:id', component: AddItemComponent },
       { path: 'add-state/:id', component: AddStateComponent },
+      { path: 'move-item/:id', component: MoveItemComponent },
+      { path: 'administrating', component: AdministratingComponent },
+      { path: 'adm-users', component: AdmUsersComponent },
     ])
   ],
   providers: [GlobalUserManager],

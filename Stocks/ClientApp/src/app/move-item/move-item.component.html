@@ -1,0 +1,13 @@
+<h1>
+  move-item
+</h1>
+<div>
+  item id: {{itemId ? itemId : 0}}
+  <br />
+</div>
+<div>
+  <input type="number" [(ngModel)]="stockId" />
+</div>
+<div>
+  <input type="button" value="Move" (click)="moveItem()" />
+</div>

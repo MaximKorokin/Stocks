@@ -21,6 +21,11 @@ export class StockItemsComponent {
   addItem() {
     this.router.navigate(["./add-item/" + this.stockId]);
   }
+
+  moveItem(event) {
+    console.log("./move-item/" + event.target.name);
+    this.router.navigate(["./move-item/" + event.target.name]);
+  }
 }
 
 export interface Item {

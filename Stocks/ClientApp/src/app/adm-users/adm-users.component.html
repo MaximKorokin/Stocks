@@ -1,0 +1,10 @@
+<h1>
+  Manage users
+</h1>
+<br />
+<ul>
+  <li *ngFor="let user of users">
+    <span>{{user.name + ":" + user.id}}</span>
+    <input type="button" value="Move" (click)="moveItem($event)" name="{{user.id}}" />
+  </li>
+</ul>

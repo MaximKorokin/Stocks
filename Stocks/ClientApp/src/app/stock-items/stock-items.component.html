@@ -5,5 +5,6 @@
 <ul>
   <li *ngFor="let item of items">
     <a [routerLink]="['/item-history', item.id]">{{item.name + ":" + item.id}}</a>
+    <input type="button" value="Move" (click)="moveItem($event)" name="{{item.id}}" />
   </li>
 </ul>
