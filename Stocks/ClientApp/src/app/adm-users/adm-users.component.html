@@ -2,9 +2,12 @@
   Manage users
 </h1>
 <br />
+<div>
+  <input type="button" value="Create user" (click)="createUser()" />
+</div>
 <ul>
   <li *ngFor="let user of users">
     <span>{{user.name + ":" + user.id}}</span>
-    <input type="button" value="Move" (click)="moveItem($event)" name="{{user.id}}" />
+    <input type="button" value="Delete" (click)="moveItem($event)" name="{{user.id}}" />
   </li>
 </ul>

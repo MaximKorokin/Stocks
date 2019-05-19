@@ -11,22 +11,22 @@
     </select>
   </div>
   <div>
-    <label>Name:</label>
+    <label>{{manager.translate("NAME")}}:</label>
     <input type="text" [(ngModel)]="user.name" />
   </div>
   <div>
-    <label>Old password:</label>
+    <label>{{manager.translate("OLD PASSWORD")}}:</label>
     <input type="password" [(ngModel)]="oldPassword" />
   </div>
   <div>
-    <label>Password:</label>
+    <label>{{manager.translate("PASSWORD")}}:</label>
     <input type="password" [(ngModel)]="newPassword1" />
   </div>
   <div>
-    <label>Repeat password:</label>
+    <label>{{manager.translate("REPEAT PASSWORD")}}:</label>
     <input type="password" [(ngModel)]="newPassword2" />
   </div>
   <div>
-    <input type="button" value="Save" (click)="edit()" />
+    <button (click)="edit()">{{manager.translate("SAVE")}}</button>
   </div>
 </div>

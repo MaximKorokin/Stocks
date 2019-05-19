@@ -25,6 +25,7 @@ import { AddStateComponent } from './add-state/add-state.component';
 import { MoveItemComponent } from './move-item/move-item.component';
 import { AdministratingComponent } from './administrating/administrating.component';
 import { AdmUsersComponent } from './adm-users/adm-users.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { AdmUsersComponent } from './adm-users/adm-users.component';
     MoveItemComponent,
     AdministratingComponent,
     AdmUsersComponent,
+    CreateUserComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -70,6 +72,7 @@ import { AdmUsersComponent } from './adm-users/adm-users.component';
       { path: 'move-item/:id', component: MoveItemComponent },
       { path: 'administrating', component: AdministratingComponent },
       { path: 'adm-users', component: AdmUsersComponent },
+      { path: 'create-user', component: CreateUserComponent },
     ])
   ],
   providers: [GlobalUserManager],

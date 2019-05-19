@@ -1,0 +1,30 @@
+<h1>
+  create-user
+</h1>
+<br />
+<div>
+  Name:<input type="text" [(ngModel)]="user.name" />
+</div>
+<div>
+  Password:<input type="text" [(ngModel)]="user.password" />
+</div>
+<div>
+  Repeat password:<input type="text" [(ngModel)]="repeatPassword">
+</div>
+<div>
+  Role:
+  <select [(ngModel)]="user.language">
+    <option value="ua">User</option>
+    <option value="en">Admin</option>
+  </select>
+</div>
+<div>
+  Language:
+  <select [(ngModel)]="user.language">
+    <option value="ua">{{manager.translate("UA")}}</option>
+    <option value="en">{{manager.translate("EN")}}</option>
+  </select>
+</div>
+<div>
+  <input type="button" value="Create" (click)="createUser()" />
+</div>

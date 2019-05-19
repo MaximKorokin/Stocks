@@ -15,14 +15,21 @@ export class GlobalUserManager {
 
   constructor(private http: HttpClient) {
     this.user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (this.user !== null) {
+      this.http.get("./assets/locale/" + this.user.language.toLowerCase() + ".json").subscribe(data => {
+        this.locale = data;
+        console.log(this.locale);
+      });
+    }
   }
 
   setUser(user: User) {
     if (this.user !== null && user !== null && this.user.language !== user.language) {
-      //this.http.get("./assets/locale/" + user.language + ".json").subscribe(data => {
-      //  this.locale = data;
-      //  console.log(this.locale);
-      //});
+      this.http.get("./assets/locale/" + user.language.toLowerCase() + ".json").subscribe(data => {
+        this.locale = data;
+        console.log(this.locale);
+      });
     }
 
     //this.id = user.id;
@@ -88,8 +95,7 @@ export class GlobalUserManager {
   }
 
   translate(key: string) {
-    return key;
-    //return this.locale[key];
+    return this.locale[key];
   }
 }
 

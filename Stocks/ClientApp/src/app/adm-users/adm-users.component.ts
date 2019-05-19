@@ -21,4 +21,8 @@ export class AdmUsersComponent {
       this.users = users;
     });
   }
+
+  createUser() {
+    this.router.navigate(["./create-user"]);
+  }
 }
