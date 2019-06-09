@@ -64,12 +64,14 @@ export class GlobalUserManager {
   }
 
   get(path: string, callback: Function = null) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': "bearer " + this.user.token
-      })
-    };
-
+    let httpOptions = {};
+    if (this.user != null)
+      httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': "bearer " + this.user.token
+        })
+      };
+  
     this.http.get(location.origin + "/api/" + path, httpOptions).subscribe(
       obj => {
         callback(obj);

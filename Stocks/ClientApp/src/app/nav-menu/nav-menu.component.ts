@@ -9,7 +9,7 @@ import { GlobalUserManager } from '../global-user-manager';
 export class NavMenuComponent {
   isExpanded = false;
 
-  constructor(private manager: GlobalUserManager) { }
+  constructor(public manager: GlobalUserManager) { }
 
   collapse() {
     this.isExpanded = false;

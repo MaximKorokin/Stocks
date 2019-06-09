@@ -28,10 +28,14 @@ namespace Stocks
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddDbContext<StocksDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")
+            //        .Replace("|DBFolder|", Environment.CurrentDirectory + "\\Data")));
+
             services.AddDbContext<StocksDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")
-                    .Replace("|DBFolder|", Environment.CurrentDirectory + "\\Data")));
+                    Configuration.GetConnectionString("mystocksdb")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

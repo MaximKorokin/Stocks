@@ -10,7 +10,7 @@ export class CreateUserComponent {
   user: User;
   repeatPassword: string;
 
-  constructor(private router: Router, private manager: GlobalUserManager) {
+  constructor(private router: Router, public manager: GlobalUserManager) {
     this.user = <User>{};
   }
 

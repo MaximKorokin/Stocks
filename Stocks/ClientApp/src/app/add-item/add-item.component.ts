@@ -8,7 +8,7 @@ import { GlobalUserManager } from '../global-user-manager';
   templateUrl: './add-item.component.html',
 })
 export class AddItemComponent {
-  private item: Item;
+  public item: Item;
   private stockId;
 
   constructor(private route: ActivatedRoute, private router: Router, private manager: GlobalUserManager) {

@@ -13,6 +13,14 @@ namespace WebApi.Controllers
     {
         private IUsersService _usersService;
 
+        [AllowAnonymous]
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            return Ok("privet drive");
+        }
+
+
         public UsersController(IUsersService usersService)
         {
             _usersService = usersService;
