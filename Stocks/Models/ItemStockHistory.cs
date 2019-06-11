@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Stocks.Models
 {
@@ -9,8 +10,11 @@ namespace Stocks.Models
         public DateTime ArrivalDate { get; set; }
         public int? ItemStateId { get; set; }
 
+        [JsonIgnore]
         public Item Item { get; set; }
+        [JsonIgnore]
         public Stock Stock { get; set; }
+        [JsonIgnore]
         public ItemState ItemState { get; set; }
     }
 }

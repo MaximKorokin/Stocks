@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Stocks.Models
 {
@@ -10,6 +11,7 @@ namespace Stocks.Models
         public string Role { get; set; }
         public string Language { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<UserStock> UsersStocks { get; set; }
     }
 }
