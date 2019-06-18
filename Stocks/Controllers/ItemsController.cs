@@ -79,6 +79,14 @@ namespace Stocks.Controllers
             return Ok(state);
         }
 
+        [AllowAnonymous]
+        [HttpPost("writestatewithdevice")]
+        public IActionResult WriteDeviceState(ItemState itemState)
+        {
+            var state = _itemsService.WriteItemStateWithDevice(itemState);
+            return Ok(state);
+        }
+
         [HttpGet("history/{itemId}")]
         public IActionResult GetItemHistory(int itemId)
         {

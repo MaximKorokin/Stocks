@@ -6,6 +6,7 @@ namespace Stocks.Models
     {
         public int Id { get; set; }
         public double Mass { get; set; }
+        public int? DeviceId { get; set; }
 
         [JsonIgnore]
         public ItemStockHistory ItemStockHistory { get; set; }

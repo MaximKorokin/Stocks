@@ -16,6 +16,7 @@ namespace Stocks.Services
         bool RemoveItem(int itemId, int ownerId);
         bool MoveItem(int itemId, int stockId, int ownerId);
         ItemState AddItemState(ItemState itemState, int itemId, int ownerId, bool addNew);
+        ItemState WriteItemStateWithDevice(ItemState itemState);
         IEnumerable<ItemStockHistory> GetItemHistory(int itemId, int ownerId);
         ItemState GetItemState(int stateId, int ownerId);
     }
@@ -142,6 +143,25 @@ namespace Stocks.Services
             _db.SaveChanges();
 
             itemState.ItemStockHistory = null;
+            return itemState;
+        }
+
+        public ItemState WriteItemStateWithDevice(ItemState itemState)
+        {
+            //var state = _db.ItemStates.FirstOrDefault(s => s.DeviceId == itemState.DeviceId);
+            //if (itemState.DeviceId != null && state != null)
+            //{
+            //    var history = _db.ItemsStocksHistory.FirstOrDefault(h => h.ItemStateId == state.Id);
+            //    var itemId = history.ItemId;
+            //    var ownerId = _db.UsersStocks.FirstOrDefault(i => i.StockId == history.StockId).UserId;
+            //    itemState.DeviceId = null;
+            //    return AddItemState(itemState, itemId, ownerId, false);
+            //}
+            //return null;
+            var state = _db.ItemStates.FirstOrDefault(s => s.DeviceId == itemState.DeviceId);
+            state.DeviceId = null;
+            state.Mass = itemState.Mass;
+            _db.SaveChanges();
             return itemState;
         }
 

@@ -26,4 +26,5 @@ export class AddStateComponent {
 export interface ItemState {
   id: number;
   mass: number;
+  deviceId?: number;
 }

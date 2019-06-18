@@ -31,6 +31,8 @@
     <Compile Remove="Migrations\20190429145039_TypeChanges.Designer.cs" />
     <Compile Remove="Migrations\20190611201924_a.cs" />
     <Compile Remove="Migrations\20190611201924_a.Designer.cs" />
+    <Compile Remove="Migrations\20190618164826_device.cs" />
+    <Compile Remove="Migrations\20190618164826_device.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
